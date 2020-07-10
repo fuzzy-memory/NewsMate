@@ -1,30 +1,39 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:news/webview_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import './helpers/articles.dart';
+import 'helpers/webview_arguments.dart';
 
 const APIKey = "7b2fce715b614d6c879b1a11e86c7d0d";
-List<Article> art = new List();
+// List<Article> art = new List();
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        brightness: Brightness.dark,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: NewsProvider()),
+      ],
+      child: Consumer<NewsProvider>(
+        builder: (ctx, newsProvider, _) => MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.indigo,
+            brightness: Brightness.dark,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: Start(),
+          routes: {
+            WebviewScreen.routeName: (ctx) => WebviewScreen(),
+          },
+        ),
       ),
-      home: Start(),
     );
   }
 }
@@ -35,47 +44,137 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  Future<void> getNews() async {
-    try{
-      final url =
-          "http://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=$APIKey";
-      final res = await http.get(url);
-      final resData = json.decode(res.body);
-      for (var obj in resData['articles']) {
-        final newart = Article(
-          author: obj['author'] ?? "Unknown",
-          content: obj['content'] ?? "Unknown",
-          title: obj['title'] ?? "Unknown",
-          url: obj['url'] ?? "Unknown",
-          desc: obj['description']??"Unknown",
-        );
-        art.add(newart);
-      }
-      print("News fetch complete");
-      // print(art);
-    }
-    catch(e){
-      print(e);
-    }
-  }
+  bool _isInit = true;
+  bool _isLoading = false;
+  final globalKey = GlobalKey<ScaffoldState>();
+
   @override
-  void didChangeDependencies() async{
-    super.didChangeDependencies();
-    await getNews();
+  void didChangeDependencies() {
+    try {
+      super.didChangeDependencies();
+      if (_isInit) {
+        setState(() {
+          _isLoading = true;
+        });
+        Provider.of<NewsProvider>(context, listen: false).getNews().then((_) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      }
+      _isInit = false;
+    } catch (e) {
+      _showErrorDialog(e);
+    }
   }
+
+  Future<void> _refresher(BuildContext context) async {
+    try {
+      print("Fetching news");
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<NewsProvider>(context, listen: false).getNews().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    } catch (e) {
+      _showErrorDialog("Something went wrong");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final art = Provider.of<NewsProvider>(context, listen: false);
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         title: Text("News"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () => _refresher(context),
+          )
+        ],
       ),
-      body: Center(
-        child: RaisedButton(
-          child: Text("Hit it"),
-          onPressed: () async {
-            getNews();
+      body: _isLoading
+          ? Center(
+              child: Container(
+                width: 300,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Fetching news. Please wait"),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: () => _refresher(context),
+              child: Center(child: buildList(context)),
+            ),
+    );
+  }
+
+  Widget buildList(BuildContext context) {
+    final art = Provider.of<NewsProvider>(context, listen: false).items;
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            globalKey.currentState.showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Opening in webview",
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.green,
+                elevation: 5,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+            Navigator.of(context).pushNamed(
+              WebviewScreen.routeName,
+              arguments: WebViewArguments(url: "${art[index].url}"),
+            );
           },
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                art[index].title,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ),
+        );
+      },
+      itemCount: art.length,
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          'Error',
+          style: TextStyle(color: Colors.red),
         ),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
       ),
     );
   }
