@@ -94,38 +94,51 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget buildList(BuildContext context) {
     final art = Provider.of<NewsProvider>(context, listen: false).items;
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              WebviewScreen.routeName,
-              arguments: WebViewArguments(
-                  url: "${art[index].url}", title: "${art[index].title}"),
-            );
-          },
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListTile(
-                title: Text(
-                  art[index].title,
-                  style: TextStyle(fontSize: 24),
+    return art.length == 0
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Image.asset(
+                  "assets/404.png",
+                  height: MediaQuery.of(context).size.height * 0.2,
                 ),
-                // subtitle:Text(art[index].) ,
-                trailing: art[index].imgURL.isEmpty
-                    ? null
-                    : Image.network(art[index].imgURL),
-                subtitle: Text(art[index].pub.isEmpty
-                    ? "${art[index].src}\nDate of publishing unknown"
-                    : "${art[index].src}\nPublished on: ${art[index].pub} IST"),
-              ),
+                Text("Nothing to see here", style: TextStyle(fontSize: 20)),
+              ],
             ),
-          ),
-        );
-      },
-      itemCount: art.length,
-    );
+          )
+        : ListView.builder(
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    WebviewScreen.routeName,
+                    arguments: WebViewArguments(
+                        url: "${art[index].url}", title: "${art[index].title}"),
+                  );
+                },
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListTile(
+                      title: Text(
+                        art[index].title,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      // subtitle:Text(art[index].) ,
+                      trailing: art[index].imgURL.isEmpty
+                          ? null
+                          : Image.network(art[index].imgURL),
+                      subtitle: Text(art[index].pub.isEmpty
+                          ? "${art[index].src}\nDate of publishing unknown"
+                          : "${art[index].src}\nPublished on: ${art[index].pub} IST"),
+                    ),
+                  ),
+                ),
+              );
+            },
+            itemCount: art.length,
+          );
   }
 
   void _showErrorDialog(String message) {
