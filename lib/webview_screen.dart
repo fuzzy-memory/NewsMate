@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:share/share.dart';
 
 import './helpers/webview_arguments.dart';
 
@@ -20,6 +21,19 @@ class _WebviewScreenState extends State<WebviewScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
+        title: Text(args.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {
+              try {
+                Share.share(args.url, subject: args.title);
+              } catch (e) {
+                print(e);
+              }
+            },
+          )
+        ],
       ),
       body: InAppWebView(
         initialUrl: args.url,

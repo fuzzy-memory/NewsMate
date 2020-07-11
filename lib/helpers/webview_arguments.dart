@@ -1,4 +1,5 @@
 class WebViewArguments{
   final String url;
-  WebViewArguments({this.url});
+  final String title;
+  WebViewArguments({this.url, this.title});
 }

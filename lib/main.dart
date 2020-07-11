@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:news/webview_screen.dart';
 import 'package:provider/provider.dart';
 
-
 import './helpers/articles.dart';
 import './helpers/webview_arguments.dart';
 
@@ -126,25 +125,25 @@ class _StartState extends State<Start> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            globalKey.currentState.showSnackBar(
-              SnackBar(
-                action: SnackBarAction(
-                  label: "OK",
-                  textColor: Colors.white,
-                  onPressed: (){},
-                ),
-                content: Text(
-                  "Opening in webview",
-                  style: TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.green,
-                elevation: 5,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
+            // globalKey.currentState.showSnackBar(
+            //   SnackBar(
+            //     action: SnackBarAction(
+            //       label: "OK",
+            //       textColor: Colors.white,
+            //       onPressed: (){},
+            //     ),
+            //     content: Text(
+            //       "Opening in webview",
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //     backgroundColor: Colors.green,
+            //     elevation: 5,
+            //     behavior: SnackBarBehavior.floating,
+            //   ),
+            // );
             Navigator.of(context).pushNamed(
               WebviewScreen.routeName,
-              arguments: WebViewArguments(url: "${art[index].url}"),
+              arguments: WebViewArguments(url: "${art[index].url}", title: "${art[index].title}"),
             );
           },
           child: Card(
