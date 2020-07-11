@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../helpers/articles.dart';
 import '../helpers/webview_arguments.dart';
-import '../widgets/sources_list.dart';
 import 'webview_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -51,7 +50,8 @@ class _MainScreenState extends State<MainScreen> {
         });
       });
     } catch (e) {
-      _showErrorDialog("Something went wrong");
+      _showErrorDialog(
+          "Something went wrong. Check your internet connection and try again");
     }
   }
 
@@ -60,36 +60,9 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       key: globalKey,
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(189, 22, 40, 1),
         title: Text("Latest News"),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.info_outline),
-            onPressed: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                isDismissible: true,
-                context: context,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                ),
-                useRootNavigator: true,
-                builder: (ctx) => SingleChildScrollView(
-                  child: GestureDetector(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: Container(
-                        padding: EdgeInsets.all(16),
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.45,
-                        child: SourcesList(),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () => _refresher(context),
@@ -121,7 +94,6 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget buildList(BuildContext context) {
     final art = Provider.of<NewsProvider>(context, listen: false).items;
-    print(art.length);
     return ListView.builder(
       itemBuilder: (context, index) {
         return GestureDetector(
@@ -135,9 +107,18 @@ class _MainScreenState extends State<MainScreen> {
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                art[index].title,
-                style: TextStyle(fontSize: 24),
+              child: ListTile(
+                title: Text(
+                  art[index].title,
+                  style: TextStyle(fontSize: 24),
+                ),
+                // subtitle:Text(art[index].) ,
+                trailing: art[index].imgURL.isEmpty
+                    ? null
+                    : Image.network(art[index].imgURL),
+                subtitle: Text(art[index].pub.isEmpty
+                    ? "${art[index].src}\nDate of publishing unknown"
+                    : "${art[index].src}\nPublished on: ${art[index].pub} IST"),
               ),
             ),
           ),

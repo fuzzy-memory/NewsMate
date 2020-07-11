@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../api.dart';
 
@@ -11,12 +12,23 @@ class Article {
   final String url;
   final String content;
   final String desc;
+  final String imgURL;
+  final String src;
+  final String pub;
 
-  Article({this.author, this.content, this.title, this.url, this.desc});
+  Article(
+      {this.pub,
+      this.src,
+      this.author,
+      this.content,
+      this.title,
+      this.url,
+      this.desc,
+      this.imgURL});
 
   @override
   String toString() {
-    return 'Title: $title\nDesc: $desc\nAuthor: $author\nURL: $url\nContent:\n$content';
+    return 'Source: $imgURL\nTitle: $title\nDesc: $desc\nAuthor: $author\nURL: $url\nContent:\n$content';
   }
 }
 
@@ -40,17 +52,23 @@ class NewsProvider extends ChangeNotifier {
       final res = await http.get(url);
       final resData = json.decode(res.body);
       for (var obj in resData['articles']) {
+        var obj2 = obj['source'];
+        DateTime date = DateTime.parse(obj['publishedAt']);
+        date.add(Duration(hours: 5, minutes: 30));
+        String data = DateFormat.yMEd().add_Hms().format(date);
         final newart = Article(
           author: obj['author'] ?? "Unknown",
           content: obj['content'] ?? "Unknown",
           title: obj['title'] ?? "Unknown",
           url: obj['url'] ?? "Unknown",
           desc: obj['description'] ?? "Unknown",
+          imgURL: obj['urlToImage'] ?? "Unknown",
+          src: obj2['name'] ?? "Source unknown",
+          pub: data ?? "",
         );
         _item.add(newart);
       }
       print("Fetch complete");
-      // print(art);
       notifyListeners();
     } catch (e) {
       throw e;
@@ -67,7 +85,6 @@ class NewsProvider extends ChangeNotifier {
         _sources.add(obj['name'] ?? "Unknown");
       }
       print("Fetch complete");
-      // print(_sources);
       notifyListeners();
     } catch (e) {
       throw e;

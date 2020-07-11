@@ -20,14 +20,15 @@ class _WebviewScreenState extends State<WebviewScreen> {
     final WebViewArguments args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color.fromRGBO(189, 22, 40, 1),
         title: Text(args.title),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () {
               try {
-                Share.share(args.url, subject: args.title);
+                Share.share("${args.url}\n\nPowered by NewsMate",
+                    subject: args.title);
               } catch (e) {
                 print(e);
               }
