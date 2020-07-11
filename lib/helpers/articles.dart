@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import '../main.dart';
+import '../api.dart';
 
 class Article {
   final String author;

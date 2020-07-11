@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-import './main.dart';
 import './helpers/webview_arguments.dart';
 
 class WebviewScreen extends StatefulWidget {

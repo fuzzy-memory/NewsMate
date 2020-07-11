@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:news/webview_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
 
 import './helpers/articles.dart';
-import 'helpers/webview_arguments.dart';
+import './helpers/webview_arguments.dart';
 
-const APIKey = "7b2fce715b614d6c879b1a11e86c7d0d";
+
 // List<Article> art = new List();
 
 void main() {
@@ -86,7 +86,6 @@ class _StartState extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
-    final art = Provider.of<NewsProvider>(context, listen: false);
     return Scaffold(
       key: globalKey,
       appBar: AppBar(
@@ -129,6 +128,11 @@ class _StartState extends State<Start> {
           onTap: () {
             globalKey.currentState.showSnackBar(
               SnackBar(
+                action: SnackBarAction(
+                  label: "OK",
+                  textColor: Colors.white,
+                  onPressed: (){},
+                ),
                 content: Text(
                   "Opening in webview",
                   style: TextStyle(color: Colors.white),
