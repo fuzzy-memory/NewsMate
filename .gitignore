@@ -44,3 +44,4 @@ app.*.map.json
 
 
 /lib/api.dart
+*.ai

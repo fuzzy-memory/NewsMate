@@ -22,15 +22,20 @@ class Article {
 
 class NewsProvider extends ChangeNotifier {
   List<Article> _item = [];
-  
+  List<String> _sources=[];
+
   List<Article> get items {
     return [..._item];
+  }
+  List<String> get src {
+    return [..._sources];
   }
 
   Future<void> getNews() async {
     try{
+      _item=[];
       final url =
-          "http://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=$APIKey";
+          "http://newsapi.org/v2/top-headlines?country=in&pageSize=100&category=business&apiKey=$APIKey";
       final res = await http.get(url);
       final resData = json.decode(res.body);
       for (var obj in resData['articles']) {
@@ -45,6 +50,25 @@ class NewsProvider extends ChangeNotifier {
       }
       print("Fetch complete");
       // print(art);
+      notifyListeners();
+    }
+    catch(e){
+      throw e;
+    }
+  }
+
+  Future<void> getSources() async {
+    try{
+      _sources=[];
+      final url =
+          "https://newsapi.org/v2/sources?country=in&apiKey=$APIKey";
+      final res = await http.get(url);
+      final resData = json.decode(res.body);
+      for (var obj in resData['sources']) {
+        _sources.add(obj['name']??"Unknown");
+      }
+      print("Fetch complete");
+      // print(_sources);
       notifyListeners();
     }
     catch(e){

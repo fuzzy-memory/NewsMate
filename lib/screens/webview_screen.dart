@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:share/share.dart';
 
-import './helpers/webview_arguments.dart';
+import '../helpers/webview_arguments.dart';
 
 class WebviewScreen extends StatefulWidget {
   static const routeName = "/web-view=screen";
