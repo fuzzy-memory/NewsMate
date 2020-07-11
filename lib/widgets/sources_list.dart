@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news/helpers/articles.dart';
 import 'package:provider/provider.dart';
+
+import '../helpers/articles.dart';
 
 class SourcesList extends StatefulWidget {
   @override
@@ -26,8 +27,11 @@ class _SourcesListState extends State<SourcesList> {
                 itemCount: srcProvider.src.length,
                 itemBuilder: (context, index) {
                   return Container(
-                      padding: EdgeInsets.all(8),
-                      child: Text(srcProvider.src[index]));
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      srcProvider.src[index],
+                    ),
+                  );
                 },
               ),
             ),

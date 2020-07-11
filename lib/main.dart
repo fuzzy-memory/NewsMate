@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news/screens/webview_screen.dart';
 import 'package:provider/provider.dart';
 
 import './helpers/articles.dart';
 import './screens/main_screen.dart';
 import './screens/splash_screen.dart';
+import './screens/webview_screen.dart';
 
 void main() {
   runApp(MyApp());
