@@ -61,7 +61,16 @@ class _MainScreenState extends State<MainScreen> {
       key: globalKey,
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(189, 22, 40, 1),
-        title: Text("Latest News"),
+        title: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            GestureDetector(
+              child: Image.asset("assets/bugle.png", height: 60),
+              onTap: () => _refresher(context),
+            ),
+            Text("Latest News"),
+          ],
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
@@ -126,7 +135,7 @@ class _MainScreenState extends State<MainScreen> {
                         style: TextStyle(fontSize: 18),
                       ),
                       // subtitle:Text(art[index].) ,
-                      trailing: art[index].imgURL.isEmpty
+                      trailing: art[index].imgURL=="Unknown"
                           ? null
                           : Image.network(art[index].imgURL),
                       subtitle: Text(art[index].pub.isEmpty

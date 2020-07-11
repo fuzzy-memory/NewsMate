@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<NewsProvider>(
         builder: (ctx, newsProvider, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'News',
+          title: 'NewsMate',
           theme: ThemeData(
             primarySwatch: Colors.indigo,
             brightness: Brightness.dark,

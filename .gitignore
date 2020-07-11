@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+/lib/api.dart
+*.ai
 
 # IntelliJ related
 *.iml
@@ -42,6 +44,5 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-
-/lib/api.dart
-*.ai
+# Keys
+/android/key.properties
