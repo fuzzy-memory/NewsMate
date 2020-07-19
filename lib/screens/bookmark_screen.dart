@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news/helpers/articles.dart';
-import 'package:news/screens/webview_screen.dart';
-import 'package:news/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
-import "../main.dart";
+import '../main.dart';
+import '../providers/bookmarks_provider.dart';
+import '../widgets/app_drawer.dart';
+import 'webview_screen.dart';
 
 class BookMarksScreen extends StatefulWidget {
   static const routeName = "/bookmarks";
@@ -17,14 +17,14 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<NewsProvider>(context, listen: false)
+    Provider.of<BookmarksProvider>(context, listen: false)
         .fetchBookmarks()
         .then((value) => null);
   }
 
   @override
   Widget build(BuildContext context) {
-    final art = Provider.of<NewsProvider>(context, listen: false);
+    final art = Provider.of<BookmarksProvider>(context, listen: false);
     return Scaffold(
       key: globalKey,
       drawer: AppDrawer(),
@@ -38,7 +38,7 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Image.asset(
-                    "assets/404.png",
+                    "assets/paper.png",
                     height: MediaQuery.of(context).size.height * 0.2,
                   ),
                   Text(

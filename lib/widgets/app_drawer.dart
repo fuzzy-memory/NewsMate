@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart' as pack;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../screens/main_screen.dart';
 import '../screens/about_screen.dart';
-import '../screens/bookmarks.dart';
+import '../screens/bookmark_screen.dart';
+import '../screens/main_screen.dart';
 
 pack.PackageInfo packageInfo;
 
@@ -20,11 +20,11 @@ class _AppDrawerState extends State<AppDrawer> {
       child: ListView(
         children: <Widget>[
           GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).popAndPushNamed(MainScreen.routeName);
             },
-                      child: DrawerHeader(
+            child: DrawerHeader(
               child: Row(
                 children: <Widget>[
                   Image.asset("assets/bugle.png"),

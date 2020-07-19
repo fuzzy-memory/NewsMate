@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:news/providers/bookmarks_provider.dart';
 import 'package:provider/provider.dart';
-import 'helpers/articles.dart';
+
+import 'providers/news_provider.dart';
 import 'screens/about_screen.dart';
 import 'screens/main_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/webview_screen.dart';
-import 'screens/bookmarks.dart';
+import 'screens/bookmark_screen.dart';
 
 Color red = Color.fromRGBO(189, 22, 40, 1);
 void main() {
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: NewsProvider()),
+        ChangeNotifierProvider.value(value: BookmarksProvider()),
       ],
       child: Consumer<NewsProvider>(
         builder: (ctx, newsProvider, _) => MaterialApp(

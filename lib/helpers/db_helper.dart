@@ -1,13 +1,13 @@
-import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
+import 'package:sqflite/sqflite.dart' as sql;
 
 class DBHelper {
-  static const String table="bookmarks";
-  static const String url="url";
-  static const String title="title";
-  static const String imgurl="imgurl";
-  static const String src="src";
-  static const String pub="pub";
+  static const String table = "bookmarks";
+  static const String url = "url";
+  static const String title = "title";
+  static const String imgurl = "imgurl";
+  static const String src = "src";
+  static const String pub = "pub";
 
   static Future<sql.Database> database() async {
     final dbPath = await sql.getDatabasesPath();

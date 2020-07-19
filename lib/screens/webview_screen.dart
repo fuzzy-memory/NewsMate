@@ -3,7 +3,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
-import '../helpers/articles.dart';
+import '../helpers/article.dart';
+import '../providers/news_provider.dart';
+import '../providers/bookmarks_provider.dart';
 
 class WebviewScreen extends StatefulWidget {
   static const routeName = "/web-view=screen";
@@ -42,7 +44,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
             icon: Icon(Icons.bookmark),
             onPressed: () {
               try {
-                Provider.of<NewsProvider>(context, listen: false)
+                Provider.of<BookmarksProvider>(context, listen: false)
                     .addBookmark(args);
                 globalKey.currentState.showSnackBar(
                   SnackBar(

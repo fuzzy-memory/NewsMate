@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
-import '../helpers/articles.dart';
-
-import '../widgets/app_drawer.dart';
 import 'webview_screen.dart';
+import '../main.dart';
+import '../providers/news_provider.dart';
+import '../widgets/app_drawer.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = "/main";
