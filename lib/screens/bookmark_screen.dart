@@ -66,7 +66,9 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                       direction: DismissDirection.endToStart,
                       key: Key(art.bookmarks[index].url),
                       onDismissed: (_) {
-                        art.removeBookmark(art.bookmarks[index].url);
+                        setState(() {
+                          art.removeBookmark(art.bookmarks[index].url);
+                        });
                         globalKey.currentState.showSnackBar(
                           SnackBar(
                             content: Text(
@@ -108,17 +110,17 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             content: Text(
-                              "Do you want to remove the selected item?",
+                              "Do you want to remove the selected bookmark?",
                             ),
                             actions: <Widget>[
                               FlatButton(
-                                child: Text("Yes"),
+                                child: Text("YES"),
                                 onPressed: () {
                                   Navigator.of(ctx).pop(true);
                                 },
                               ),
                               FlatButton(
-                                child: Text("No"),
+                                child: Text("NO"),
                                 onPressed: () {
                                   Navigator.of(ctx).pop(false);
                                 },
