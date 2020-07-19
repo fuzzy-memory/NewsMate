@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:package_info/package_info.dart' as pack;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
@@ -13,12 +12,6 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
-  // @override
-  // void didChangeDependencies() async {
-  //   super.didChangeDependencies();
-  //   packInfo = await pack.PackageInfo.fromPlatform();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

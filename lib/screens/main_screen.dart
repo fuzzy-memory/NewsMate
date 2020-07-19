@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../main.dart';
 import '../helpers/articles.dart';
-import '../helpers/webview_arguments.dart';
+
 import '../widgets/app_drawer.dart';
 import 'webview_screen.dart';
 
@@ -26,7 +26,6 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _isLoading = true;
         });
-        Provider.of<NewsProvider>(context, listen: false).getSources();
         Provider.of<NewsProvider>(context, listen: false).getNews().then((_) {
           setState(() {
             _isLoading = false;
@@ -45,7 +44,6 @@ class _MainScreenState extends State<MainScreen> {
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<NewsProvider>(context, listen: false).getSources();
       Provider.of<NewsProvider>(context, listen: false).getNews().then((_) {
         setState(() {
           _isLoading = false;
@@ -93,7 +91,10 @@ class _MainScreenState extends State<MainScreen> {
             )
           : RefreshIndicator(
               onRefresh: () => _refresher(context),
-              child: Center(child: buildList(context)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(child: buildList(context)),
+              ),
             ),
     );
   }
@@ -109,7 +110,10 @@ class _MainScreenState extends State<MainScreen> {
                   "assets/404.png",
                   height: MediaQuery.of(context).size.height * 0.2,
                 ),
-                Text("Nothing to see here", style: TextStyle(fontSize: 20)),
+                Text(
+                  "Something went wrong",
+                  style: TextStyle(fontSize: 20),
+                ),
               ],
             ),
           )
@@ -119,8 +123,7 @@ class _MainScreenState extends State<MainScreen> {
                 onTap: () {
                   Navigator.of(context).pushNamed(
                     WebviewScreen.routeName,
-                    arguments: WebViewArguments(
-                        url: "${art[index].url}", title: "${art[index].title}"),
+                    arguments: art[index],
                   );
                 },
                 child: Card(

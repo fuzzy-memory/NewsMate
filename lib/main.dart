@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import './helpers/articles.dart';
-import './screens/about_screen.dart';
-import './screens/main_screen.dart';
-import './screens/splash_screen.dart';
-import './screens/webview_screen.dart';
+import 'helpers/articles.dart';
+import 'screens/about_screen.dart';
+import 'screens/main_screen.dart';
+import 'screens/splash_screen.dart';
+import 'screens/webview_screen.dart';
 import 'screens/bookmarks.dart';
 
 Color red = Color.fromRGBO(189, 22, 40, 1);
-
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

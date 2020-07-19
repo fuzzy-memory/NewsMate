@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:news/helpers/db_helper.dart';
+import 'package:news/main.dart';
+import 'package:provider/provider.dart';
 
 import '../api.dart';
 
@@ -33,15 +36,15 @@ class Article {
 }
 
 class NewsProvider extends ChangeNotifier {
+  List<Article> _bookm = [];
   List<Article> _item = [];
-  List<String> _sources = [];
 
   List<Article> get items {
     return [..._item];
   }
 
-  List<String> get src {
-    return [..._sources];
+  List<Article> get bookmarks {
+    return [..._bookm];
   }
 
   Future<void> getNews() async {
@@ -68,24 +71,59 @@ class NewsProvider extends ChangeNotifier {
         );
         _item.add(newart);
       }
-      print("Fetch complete");
+      print("News fetched");
       notifyListeners();
     } catch (e) {
       throw e;
     }
   }
 
-  Future<void> getSources() async {
+  Future<void> addBookmark(Article arg) async {
     try {
-      _sources = [];
-      final url = "https://newsapi.org/v2/sources?country=in&apiKey=$APIKey";
-      final res = await http.get(url);
-      final resData = json.decode(res.body);
-      for (var obj in resData['sources']) {
-        _sources.add(obj['name'] ?? "Unknown");
-      }
-      print("Fetch complete");
+      if (_bookm.contains(arg)) return;
+      _bookm.add(arg);
+      DBHelper.insert(
+        DBHelper.table,
+        {
+          DBHelper.url: arg.url,
+          DBHelper.title: arg.title,
+          DBHelper.imgurl: arg.imgURL,
+          DBHelper.src: arg.src,
+          DBHelper.pub: arg.pub,
+        },
+      );
       notifyListeners();
+      print("Bookmark added successfully");
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> fetchBookmarks() async {
+    try {
+      final dataList = await DBHelper.getData(DBHelper.table);
+      _bookm = dataList
+          .map((item) => Article(
+                url: item[DBHelper.url],
+                title: item[DBHelper.title],
+                imgURL: item[DBHelper.imgurl],
+                src: item[DBHelper.src],
+                pub: item[DBHelper.pub],
+              ))
+          .toList();
+      notifyListeners();
+      print("Bookmarks fetched");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void removeBookmark(String url) {
+    try {
+      _bookm.removeWhere((element) => element.url == url);
+      DBHelper.delID(url);
+      notifyListeners();
+      print("Bookmark removed successfully");
     } catch (e) {
       throw e;
     }

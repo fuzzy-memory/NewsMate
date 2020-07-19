@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
-import '../helpers/webview_arguments.dart';
+import '../helpers/articles.dart';
 
 class WebviewScreen extends StatefulWidget {
   static const routeName = "/web-view=screen";
@@ -13,12 +14,14 @@ class WebviewScreen extends StatefulWidget {
 
 class _WebviewScreenState extends State<WebviewScreen> {
   InAppWebViewController webView;
-  // String url = ;
+  final globalKey = GlobalKey<ScaffoldState>();
   double progress = 0;
+  // bool isBookMarked = false;
   @override
   Widget build(BuildContext context) {
-    final WebViewArguments args = ModalRoute.of(context).settings.arguments;
+    final Article args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(189, 22, 40, 1),
         title: Text(args.title),
@@ -27,10 +30,39 @@ class _WebviewScreenState extends State<WebviewScreen> {
             icon: Icon(Icons.share),
             onPressed: () {
               try {
-                Share.share("${args.url}\n\nPowered by NewsMate",
+                Share.share(
+                    "${args.url}\n\nPowered by NewsMate.\nGet it on the Google Play Store:\nhttps://play.google.com/store/apps/details?id=com.fuzzymemory.news",
                     subject: args.title);
               } catch (e) {
                 print(e);
+              }
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.bookmark),
+            onPressed: () {
+              try {
+                Provider.of<NewsProvider>(context, listen: false)
+                    .addBookmark(args);
+                globalKey.currentState.showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Bookmarks updated!",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    elevation: 5,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.green,
+                    duration: Duration(milliseconds: 700),
+                    action: SnackBarAction(
+                      label: "OK",
+                      textColor: Colors.white,
+                      onPressed: () {},
+                    ),
+                  ),
+                );
+              } catch (e) {
+                _showErrorDialog(e);
               }
             },
           )
@@ -62,6 +94,27 @@ class _WebviewScreenState extends State<WebviewScreen> {
             this.progress = progress / 100;
           });
         },
+      ),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          'Error',
+          style: TextStyle(color: Colors.red),
+        ),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
       ),
     );
   }
