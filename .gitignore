@@ -10,6 +10,7 @@
 .svn/
 /lib/api.dart
 *.ai
+/assets/photo.jpg
 
 # IntelliJ related
 *.iml

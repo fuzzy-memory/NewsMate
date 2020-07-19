@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../helpers/articles.dart';
 import '../helpers/webview_arguments.dart';
+import '../widgets/app_drawer.dart';
 import 'webview_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -59,17 +61,12 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: globalKey,
+      drawer: AppDrawer(),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(189, 22, 40, 1),
-        title: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            GestureDetector(
-              child: Image.asset("assets/bugle.png", height: 60),
-              onTap: () => _refresher(context),
-            ),
-            Text("Latest News"),
-          ],
+        backgroundColor: red,
+        title: GestureDetector(
+          onTap: () => _refresher(context),
+          child: Text("Latest News"),
         ),
         actions: <Widget>[
           IconButton(
@@ -135,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
                         style: TextStyle(fontSize: 18),
                       ),
                       // subtitle:Text(art[index].) ,
-                      trailing: art[index].imgURL=="Unknown"
+                      trailing: art[index].imgURL == "Unknown"
                           ? null
                           : Image.network(art[index].imgURL),
                       subtitle: Text(art[index].pub.isEmpty
