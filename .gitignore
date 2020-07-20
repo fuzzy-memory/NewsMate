@@ -49,5 +49,4 @@ app.*.map.json
 /android/key.properties
 
 # Play store assets
-/store_assets
 /screenshots
