@@ -21,6 +21,7 @@ class BookmarksProvider extends ChangeNotifier {
           DBHelper.imgurl: arg.imgURL,
           DBHelper.src: arg.src,
           DBHelper.pub: arg.pub,
+          DBHelper.desc: arg.desc,
         },
       );
       notifyListeners();
@@ -40,6 +41,7 @@ class BookmarksProvider extends ChangeNotifier {
                 imgURL: item[DBHelper.imgurl],
                 src: item[DBHelper.src],
                 pub: item[DBHelper.pub],
+                desc: item[DBHelper.desc],
               ))
           .toList();
       notifyListeners();

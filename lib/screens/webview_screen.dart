@@ -3,8 +3,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
+import 'bookmark_screen.dart';
 import '../helpers/article.dart';
-import '../providers/news_provider.dart';
 import '../providers/bookmarks_provider.dart';
 
 class WebviewScreen extends StatefulWidget {
@@ -57,9 +57,9 @@ class _WebviewScreenState extends State<WebviewScreen> {
                     backgroundColor: Colors.green,
                     duration: Duration(milliseconds: 700),
                     action: SnackBarAction(
-                      label: "OK",
+                      label: "View bookmarks",
                       textColor: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {Navigator.of(context).popAndPushNamed(BookMarksScreen.routeName);},
                     ),
                   ),
                 );
@@ -80,23 +80,13 @@ class _WebviewScreenState extends State<WebviewScreen> {
         onWebViewCreated: (InAppWebViewController controller) {
           webView = controller;
         },
-        // onLoadStart: (InAppWebViewController controller, String url) {
-        //   setState(() {
-        //     args.url = url;
-        //   });
-        // },
-        // onLoadStop:
-        //     (InAppWebViewController controller, String url) async {
-        //   setState(() {
-        //     args.url = url;
-        //   });
-        // },
         onProgressChanged: (InAppWebViewController controller, int progress) {
           setState(() {
             this.progress = progress / 100;
           });
         },
       ),
+      
     );
   }
 

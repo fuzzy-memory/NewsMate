@@ -20,6 +20,7 @@ class NewsProvider extends ChangeNotifier {
       final url =
           "http://newsapi.org/v2/top-headlines?country=in&pageSize=100&category=business&apiKey=$APIKey";
       final res = await http.get(url);
+      if(res.statusCode!=200) throw Exception("Error");
       final resData = json.decode(res.body);
       for (var obj in resData['articles']) {
         var obj2 = obj['source'];

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news/providers/bookmarks_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/news_provider.dart';
+import 'providers/bookmarks_provider.dart';
 import 'screens/about_screen.dart';
 import 'screens/main_screen.dart';
 import 'screens/splash_screen.dart';
