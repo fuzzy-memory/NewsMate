@@ -34,7 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 Text(
                   "NEWSMATE",
                   style: TextStyle(
-                    color: Colors.white,
                     fontFamily: "RobotoSlab",
                     fontWeight: FontWeight.w700,
                     fontSize: 27,
@@ -48,9 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   "Business news. Simplified.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
                     fontFamily: "RobotoSlab",
-                    // fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w200,
                     fontSize: 18,
                     letterSpacing: 2,

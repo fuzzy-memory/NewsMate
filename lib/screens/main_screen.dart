@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news/helpers/notifications_helper.dart';
+import 'package:news/providers/appstate.dart';
 import 'package:provider/provider.dart';
 
 import 'bookmark_screen.dart';
@@ -17,6 +19,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   bool _isInit = true;
   bool _isLoading = false;
+  bool isDark;
   final globalKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -58,6 +61,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    isDark = Provider.of<AppNDStatus>(context, listen: false).getDarkStatus;
     return Scaffold(
       key: globalKey,
       drawer: AppDrawer(),
@@ -216,7 +220,7 @@ class _MainScreenState extends State<MainScreen> {
                   width: 50,
                   child: Divider(
                     thickness: 5,
-                    color: red.withOpacity(0.4),
+                    color: isDark ? red.withOpacity(0.4) : red,
                   ),
                 ),
                 Container(
@@ -300,8 +304,17 @@ class _MainScreenState extends State<MainScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Continue reading"),
-                                  Icon(Icons.chevron_right)
+                                  Text(
+                                    "Continue reading",
+                                    style: TextStyle(
+                                        color: isDark
+                                            ? Colors.black
+                                            : Colors.white),
+                                  ),
+                                  Icon(
+                                    Icons.chevron_right,
+                                    color: isDark ? Colors.black : Colors.white,
+                                  )
                                 ],
                               ),
                               onPressed: () {

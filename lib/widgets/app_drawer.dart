@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart' as pack;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../screens/about_screen.dart';
+import '../screens/preferences_screen.dart';
 import '../screens/bookmark_screen.dart';
 import '../screens/main_screen.dart';
 
@@ -57,23 +57,31 @@ class _AppDrawerState extends State<AppDrawer> {
               Navigator.of(context).popAndPushNamed(BookMarksScreen.routeName);
             },
           ),
+          // ListTile(
+          //   leading: Icon(Icons.warning),
+          //   title: Text("Report an issue"),
+          //   onTap: () async {
+          //     Navigator.of(context).pop();
+          //     _launchURL("mailto:tush.machavolu@gmail.com");
+          //   },
+          // ),
+          // ListTile(
+          //   leading: Icon(Icons.info_outline),
+          //   title: Text("About"),
+          //   onTap: () async {
+          //     packageInfo = await pack.PackageInfo.fromPlatform();
+          //     Navigator.of(context).pop();
+          //     Navigator.of(context).popAndPushNamed(AboutScreen.routeName);
+          //   },
+          // ),
           ListTile(
-            leading: Icon(Icons.warning),
-            title: Text("Report an issue"),
-            onTap: () async {
+            leading: Icon(Icons.settings),
+            title: Text("Preferences"),
+            onTap: (){
               Navigator.of(context).pop();
-              _launchURL("mailto:tush.machavolu@gmail.com");
+              Navigator.of(context).popAndPushNamed(PreferencesScreen.routeName);
             },
-          ),
-          ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text("About"),
-            onTap: () async {
-              packageInfo = await pack.PackageInfo.fromPlatform();
-              Navigator.of(context).pop();
-              Navigator.of(context).popAndPushNamed(AboutScreen.routeName);
-            },
-          ),
+          )
         ],
       ),
       elevation: 10,

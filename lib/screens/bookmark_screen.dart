@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news/providers/appstate.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -15,6 +16,7 @@ class BookMarksScreen extends StatefulWidget {
 
 class _BookMarksScreenState extends State<BookMarksScreen> {
   final globalKey = GlobalKey<ScaffoldState>();
+  bool isDark;
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,7 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
   @override
   Widget build(BuildContext context) {
     final art = Provider.of<BookmarksProvider>(context, listen: false);
+    isDark = Provider.of<AppNDStatus>(context, listen: false).getDarkStatus;
     return Scaffold(
       key: globalKey,
       drawer: AppDrawer(),
@@ -57,10 +60,11 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
               child: ListView.builder(
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: ()=>buildPreviewSheet(index),
-                    onLongPress: (){
-                      Share.share("${art.bookmarks[index].url}\n\nPowered by NewsMate.\nGet it on the Google Play Store:\nhttps://play.google.com/store/apps/details?id=com.fuzzymemory.news",
-                    subject: art.bookmarks[index].title);
+                    onTap: () => buildPreviewSheet(index),
+                    onLongPress: () {
+                      Share.share(
+                          "${art.bookmarks[index].url}\n\nPowered by NewsMate.\nGet it on the Google Play Store:\nhttps://play.google.com/store/apps/details?id=com.fuzzymemory.news",
+                          subject: art.bookmarks[index].title);
                     },
                     child: Dismissible(
                       direction: DismissDirection.endToStart,
@@ -96,6 +100,7 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                                 const EdgeInsets.symmetric(horizontal: 24.0),
                             child: Icon(
                               Icons.delete,
+                              color: Colors.white,
                               size: 30,
                             ),
                           ),
@@ -180,7 +185,7 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                   width: 50,
                   child: Divider(
                     thickness: 5,
-                    color: red.withOpacity(0.4),
+                    color: isDark?red.withOpacity(0.4):red,
                   ),
                 ),
                 Container(
@@ -212,7 +217,8 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(16),
-                                    child: art.bookmarks[index].imgURL.contains("Unknown") 
+                                    child: art.bookmarks[index].imgURL
+                                            .contains("Unknown")
                                         ? Row(
                                             children: <Widget>[
                                               Expanded(
@@ -228,13 +234,18 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                                         : Image.network(
                                             art.bookmarks[index].imgURL,
                                             alignment: Alignment.center,
-                                            errorBuilder: (_,__,___)=>Row(
-                                        children: <Widget>[
-                                          Expanded(child: Image.asset("assets/404.png", ), flex: 7,),
-                                          Text(
-                                              "Something went wrong loading the image"),
-                                        ],
-                                      ),
+                                            errorBuilder: (_, __, ___) => Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Image.asset(
+                                                    "assets/404.png",
+                                                  ),
+                                                  flex: 7,
+                                                ),
+                                                Text(
+                                                    "Something went wrong loading the image"),
+                                              ],
+                                            ),
                                           ),
                                   ),
                                 ),
@@ -258,8 +269,17 @@ class _BookMarksScreenState extends State<BookMarksScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Continue reading"),
-                                  Icon(Icons.chevron_right)
+                                  Text(
+                                    "Continue reading",
+                                    style: TextStyle(
+                                        color: isDark
+                                            ? Colors.black
+                                            : Colors.white),
+                                  ),
+                                  Icon(
+                                    Icons.chevron_right,
+                                    color: isDark ? Colors.black : Colors.white,
+                                  )
                                 ],
                               ),
                               onPressed: () {
