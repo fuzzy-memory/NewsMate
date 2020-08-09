@@ -20,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   bool _isInit = true;
   bool _isLoading = false;
   bool isDark;
+  String post404;
   final globalKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -62,6 +63,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     isDark = Provider.of<AppNDStatus>(context, listen: false).getDarkStatus;
+    post404=isDark?"dark":"light";
     return Scaffold(
       key: globalKey,
       drawer: AppDrawer(),
@@ -110,7 +112,7 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Image.asset(
-                  "assets/404.png",
+                  "assets/404-$post404.png",
                   height: MediaQuery.of(context).size.height * 0.2,
                 ),
                 Text(

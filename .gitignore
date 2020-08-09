@@ -11,6 +11,7 @@
 /lib/api.dart
 *.ai
 /assets/photo.jpg
+/android/app/google-services.json
 
 # IntelliJ related
 *.iml
